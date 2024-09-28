@@ -22,3 +22,11 @@ func (r *BlogRepository) FindAllBlogs() ([]model.Blog, error) {
 	}
 	return blogs, nil
 }
+
+func (r *BlogRepository) FindBlogByID(id uint) (*model.Blog, error) {
+	var blog model.Blog
+	if err := r.DB.First(&blog, id).Error; err != nil {
+		return nil, err
+	}
+	return &blog, nil
+}

@@ -4,6 +4,7 @@ import (
 	"blog/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type BlogController struct {
@@ -16,11 +17,28 @@ func NewBlogController(blogService *service.BlogService) *BlogController {
 	}
 }
 
-func (ctrl *BlogController) GetAllBlogs(c *gin.Context) {
+func (ctrl *BlogController) GetAllBlogs(ctx *gin.Context) {
 	blogs, err := ctrl.BlogService.GetAllBlogs()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, blogs)
+	ctx.JSON(http.StatusOK, blogs)
+}
+
+func (ctrl *BlogController) GetBlogByID(ctx *gin.Context) {
+	idParam := ctx.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid blog ID"})
+		return
+	}
+
+	blog, err := ctrl.BlogService.GetBlogByID(uint(id))
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Blog not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, blog)
 }
