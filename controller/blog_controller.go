@@ -56,5 +56,5 @@ func (c *BlogController) AddBlog(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Blog created successfully"})
+	ctx.JSON(http.StatusOK, "Blog created successfully")
 }
