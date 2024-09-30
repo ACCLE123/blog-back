@@ -3,6 +3,7 @@ package service
 import (
 	"blog/mapper"
 	"blog/model"
+	"time"
 )
 
 type BlogService struct {
@@ -25,4 +26,9 @@ func (s *BlogService) GetBlogByID(id uint) (*model.Blog, error) {
 		return nil, err
 	}
 	return blog, nil
+}
+
+func (s *BlogService) AddBlog(blog *model.Blog) error {
+	blog.CreatedAt = time.Now()
+	return s.Repo.Create(blog)
 }

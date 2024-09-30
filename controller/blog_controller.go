@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"blog/model"
 	"blog/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -41,4 +42,19 @@ func (ctrl *BlogController) GetBlogByID(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, blog)
+}
+
+func (c *BlogController) AddBlog(ctx *gin.Context) {
+	var blog model.Blog
+	if err := ctx.ShouldBindJSON(&blog); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	if err := c.BlogService.AddBlog(&blog); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create blog"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Blog created successfully"})
 }

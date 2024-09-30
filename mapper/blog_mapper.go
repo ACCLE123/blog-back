@@ -30,3 +30,7 @@ func (r *BlogRepository) FindBlogByID(id uint) (*model.Blog, error) {
 	}
 	return &blog, nil
 }
+
+func (r *BlogRepository) Create(blog *model.Blog) error {
+	return r.DB.Create(blog).Error
+}
