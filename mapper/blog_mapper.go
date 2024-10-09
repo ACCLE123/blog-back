@@ -31,6 +31,10 @@ func (r *BlogRepository) FindBlogByID(id uint) (*model.Blog, error) {
 	return &blog, nil
 }
 
+func (r *BlogRepository) UpdateBlogByID(blog *model.Blog) error {
+	return r.DB.Model(&model.Blog{}).Where("id = ?", blog.ID).Updates(blog).Error
+}
+
 func (r *BlogRepository) Create(blog *model.Blog) error {
 	return r.DB.Create(blog).Error
 }

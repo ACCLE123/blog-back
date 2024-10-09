@@ -32,3 +32,7 @@ func (s *BlogService) AddBlog(blog *model.Blog) error {
 	blog.CreatedAt = time.Now()
 	return s.Repo.Create(blog)
 }
+
+func (s *BlogService) UpdateBlog(blog *model.Blog) error {
+	return s.Repo.UpdateBlogByID(blog)
+}

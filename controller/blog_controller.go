@@ -58,3 +58,16 @@ func (c *BlogController) AddBlog(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, "Blog created successfully")
 }
+
+func (c *BlogController) UpdateBlog(ctx *gin.Context) {
+	var blog model.Blog
+	if err := ctx.ShouldBindJSON(&blog); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+	if err := c.BlogService.UpdateBlog(&blog); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create blog"})
+		return
+	}
+	ctx.JSON(http.StatusOK, "Blog updated successfully")
+}
