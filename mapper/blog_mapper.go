@@ -15,30 +15,30 @@ func NewBlogRepository(db *gorm.DB) *BlogRepository {
 	}
 }
 
-func (r *BlogRepository) FindAllBlogs() ([]model.Blog, error) {
+func (r *BlogRepository) FindAllBlogs(tx *gorm.DB) ([]model.Blog, error) {
 	var blogs []model.Blog
-	if err := r.DB.Find(&blogs).Error; err != nil {
+	if err := tx.Find(&blogs).Error; err != nil {
 		return nil, err
 	}
 	return blogs, nil
 }
 
-func (r *BlogRepository) FindBlogByID(id uint) (*model.Blog, error) {
+func (r *BlogRepository) FindBlogByID(tx *gorm.DB, id uint) (*model.Blog, error) {
 	var blog model.Blog
-	if err := r.DB.First(&blog, id).Error; err != nil {
+	if err := tx.First(&blog, id).Error; err != nil {
 		return nil, err
 	}
 	return &blog, nil
 }
 
-func (r *BlogRepository) UpdateBlogByID(blog *model.Blog) error {
-	return r.DB.Model(&model.Blog{}).Where("id = ?", blog.ID).Updates(blog).Error
+func (r *BlogRepository) UpdateBlogByID(tx *gorm.DB, blog *model.Blog) error {
+	return tx.Model(&model.Blog{}).Where("id = ?", blog.ID).Updates(blog).Error
 }
 
-func (r *BlogRepository) Create(blog *model.Blog) error {
-	return r.DB.Create(blog).Error
+func (r *BlogRepository) Create(tx *gorm.DB, blog *model.Blog) error {
+	return tx.Create(blog).Error
 }
 
-func (r *BlogRepository) DeleteBlogByID(id uint) error {
-	return r.DB.Delete(&model.Blog{}, id).Error
+func (r *BlogRepository) DeleteBlogByID(tx *gorm.DB, id uint) error {
+	return tx.Delete(&model.Blog{}, id).Error
 }

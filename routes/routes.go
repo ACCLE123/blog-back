@@ -12,4 +12,5 @@ func RegisterRoutes(r *gin.Engine, blogController *controller.BlogController) {
 	r.POST("/blogs", blogController.AddBlog)
 	r.PUT("/blogs", blogController.UpdateBlog)
 	r.DELETE("/blogs/:id", blogController.DeleteBlog)
+	r.POST("/blogs/updateOrAdd", blogController.UpdateOrAddBlog)
 }
