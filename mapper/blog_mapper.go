@@ -38,3 +38,7 @@ func (r *BlogRepository) UpdateBlogByID(blog *model.Blog) error {
 func (r *BlogRepository) Create(blog *model.Blog) error {
 	return r.DB.Create(blog).Error
 }
+
+func (r *BlogRepository) DeleteBlogByID(id uint) error {
+	return r.DB.Delete(&model.Blog{}, id).Error
+}

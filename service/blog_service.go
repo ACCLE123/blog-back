@@ -36,3 +36,7 @@ func (s *BlogService) AddBlog(blog *model.Blog) error {
 func (s *BlogService) UpdateBlog(blog *model.Blog) error {
 	return s.Repo.UpdateBlogByID(blog)
 }
+
+func (s *BlogService) DeleteBlog(id uint) error {
+	return s.Repo.DeleteBlogByID(id)
+}

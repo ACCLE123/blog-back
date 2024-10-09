@@ -71,3 +71,15 @@ func (c *BlogController) UpdateBlog(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, "Blog updated successfully")
 }
+
+func (c *BlogController) DeleteBlog(ctx *gin.Context) {
+	idParam := ctx.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid blog ID"})
+	}
+	if err := c.BlogService.DeleteBlog(uint(id)); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete blog"})
+	}
+	ctx.JSON(http.StatusOK, "Blog deleted successfully")
+}
