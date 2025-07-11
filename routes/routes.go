@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterRoutes(r *gin.Engine, blogController *controller.BlogController) {
+func RegisterRoutes(r *gin.Engine, blogController *controller.BlogController, imageController *controller.ImageController) {
 	r.GET("/ping", controller.Ping)
 	r.GET("/blogs", blogController.GetAllBlogs)
 	r.GET("/blogs/:id", blogController.GetBlogByID)
@@ -13,4 +13,5 @@ func RegisterRoutes(r *gin.Engine, blogController *controller.BlogController) {
 	r.PUT("/blogs", blogController.UpdateBlog)
 	r.DELETE("/blogs/:id", blogController.DeleteBlog)
 	r.POST("/blogs/updateOrAdd", blogController.UpdateOrAddBlog)
+	r.POST("/upload/image", imageController.UploadImage)
 }

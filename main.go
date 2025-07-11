@@ -4,8 +4,11 @@ import (
 	"blog/controller"
 	"blog/database"
 	"blog/mapper"
+	"blog/oss"
 	"blog/routes"
 	"blog/service"
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -26,8 +29,18 @@ func main() {
 	DB := database.Connect()
 	blogMapper := mapper.NewBlogRepository(DB)
 	blogService := service.NewBlogService(blogMapper)
-	controller := controller.NewBlogController(blogService)
+	blogController := controller.NewBlogController(blogService)
 
-	routes.RegisterRoutes(r, controller)
+	endpoint := os.Getenv("OSS_ENDPOINT")
+	accessKeyId := os.Getenv("OSS_ACCESS_KEY_ID")
+	accessKeySecret := os.Getenv("OSS_ACCESS_KEY_SECRET")
+	bucketName := os.Getenv("OSS_BUCKET")
+	aliyunOSS, err := oss.NewAliyunOSS(endpoint, accessKeyId, accessKeySecret, bucketName)
+	if err != nil {
+		panic(err)
+	}
+	imageController := controller.NewImageController(aliyunOSS)
+
+	routes.RegisterRoutes(r, blogController, imageController)
 	r.Run()
 }
