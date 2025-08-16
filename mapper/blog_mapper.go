@@ -2,6 +2,7 @@ package mapper
 
 import (
 	"blog/model"
+
 	"gorm.io/gorm"
 )
 
@@ -17,7 +18,7 @@ func NewBlogRepository(db *gorm.DB) *BlogRepository {
 
 func (r *BlogRepository) FindAllBlogs(tx *gorm.DB) ([]model.Blog, error) {
 	var blogs []model.Blog
-	if err := tx.Find(&blogs).Error; err != nil {
+	if err := tx.Order("created_at DESC").Find(&blogs).Error; err != nil {
 		return nil, err
 	}
 	return blogs, nil
